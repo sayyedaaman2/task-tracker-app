@@ -2,7 +2,7 @@ import express from 'express';
 import type { Application } from 'express';
 import cors from 'cors';
 
-
+import routes from './routes'
 const app:Application = express();
 
 // Middlewares
@@ -17,6 +17,6 @@ app.use(express.urlencoded({extended : true}))
 app.get("/",(req,res)=>{
     res.send("Task Tracker API is running 🚀")
 })
-
+app.use('/',routes)
 
 export default app;
