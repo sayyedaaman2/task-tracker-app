@@ -17,10 +17,7 @@ export const updateTask = async(id:string,updateData:Partial<ITask>):Promise<ITa
     return Task.findByIdAndUpdate(id,updateData,{new:true});
 }
 
-export const deleteTask = async (id: string): Promise<void> => {
-  const task = await Task.findByIdAndDelete(id);
-  if (!task) {
-    throw new Error("Task not found");
-  }
+export const deleteTask = async (id: string): Promise<void | null> => {
+  return await Task.findByIdAndDelete(id);
 };
 

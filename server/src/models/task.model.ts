@@ -1,16 +1,21 @@
 import {model,Schema,Document} from 'mongoose'
+import { TaskStatus } from '../utils/constants';
 
 export interface ITask extends Document{
     title : string;
     description? : string;
-    completed : boolean;
+    status : TaskStatus
 }
 
 
 const taskSchema = new Schema<ITask>({
-    title : {type : String, required: true},
+    title : {type : String, required: true, trim:true},
     description : {type : String},
-    completed : { type : Boolean, default : false},
+    status : {
+        type : String,
+        enum : Object.values(TaskStatus),
+        default : TaskStatus.PENDING
+    }
     
 },{
     timestamps : true,
