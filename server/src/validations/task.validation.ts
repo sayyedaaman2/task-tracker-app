@@ -23,3 +23,11 @@ export const updateTaskSchema = z.object({
 export const taskIdSchema = z.object({
   id: zodObjectId(),
 });
+
+export const taskStatusSchema = z.object({
+  status : z.enum([
+    TaskStatus.PENDING,
+    TaskStatus.IN_PROGRESS,
+    TaskStatus.COMPLETED,
+  ]).optional()
+})

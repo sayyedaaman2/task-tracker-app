@@ -4,7 +4,16 @@ import * as taskService from "../services/task.service";
 // GET /api/tasks
 export const getAllTasks = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const tasks = await taskService.getAllTasks();
+
+    let tasks;
+
+    if (req.query.status) {
+      const status = req.query.status as string; 
+      tasks = await taskService.getAllTasks(status);
+    } else {
+      tasks = await taskService.getAllTasks();
+    }
+
     res.status(200).json(tasks);
   } catch (error) {
     if (error instanceof Error) { next(error) }

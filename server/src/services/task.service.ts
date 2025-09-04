@@ -1,6 +1,9 @@
 import Task,{ITask} from '../models/task.model'
 
-export const getAllTasks = async ():Promise<ITask[]> =>{
+export const getAllTasks = async (status?:string):Promise<ITask[]> =>{
+    if(status){
+        return Task.find({status});
+    }
     return Task.find();
 }
 
