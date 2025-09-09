@@ -1,16 +1,14 @@
-import type React from "react";
-import Header from "../common/Header";
-
-interface LayoutProps {
-    children : React.ReactNode
-}
-
-
-export default function Layout ({children}:LayoutProps){
-    return(
-        <div className="layout grid grid-cols-[250px_1fr] h-screen ">
-            <Header/>
-            {children}
-        </div>
-    )
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { AppSidebar } from "@/components/common/app-sidebar"
+ 
+export default function Layout({ children }: { children: React.ReactNode }) {
+  return (
+    <SidebarProvider>
+      <AppSidebar />
+      <main>
+        <SidebarTrigger />
+        {children}
+      </main>
+    </SidebarProvider>
+  )
 }

@@ -4,8 +4,9 @@ import HomePage from "./pages/Home"
 import AboutPage from "./pages/About"
 import DashboardPage from "./pages/Dashboard"
 import TaskPage from "./pages/Tasks"
+import useToast from '@/hooks/useToast'
 function App() {
-
+  const {ToastContainer} = useToast();
   return (
    <Layout>
     <Routes>
@@ -15,6 +16,7 @@ function App() {
       <Route path="tasks" element={<TaskPage/>}/>
 
     </Routes>
+    <ToastContainer/>
    </Layout>
   )
 }
