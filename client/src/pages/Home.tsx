@@ -2,8 +2,9 @@ import { TaskCard } from "@/views/TaskCard";
 import { useTaskViewModel } from "@/viewmodels/TaskViewModel";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import type { Task } from "@/models/Task";
 export default function HomePage() {
-    const { tasks, loading, updateTask,deleteTask } = useTaskViewModel();
+    const { tasks, loading, updateTask, addTask, deleteTask } = useTaskViewModel();
     function onToggleStatusHandler(id: string) {
         const task = tasks.find((t) => t._id === id);
         if (!task) return;
@@ -23,25 +24,44 @@ export default function HomePage() {
 
         deleteTask(id)
     }
+    function onSaveHanlder(task: Task) {
+
+        const { _id, ...rest } = task;
+        console.log(_id,rest);
+        if (!_id) {
+            addTask({ ...rest });
+        } else {
+            updateTask(_id, { ...rest });
+        }
+    }
 
     return (
-        <div id="home" className="p-4 flex flex-col">
-            <div className="flex-1 grid gap-4 grid-cols-2  auto-rows-[250px]">
+        <div id="home" className="p-4 flex flex-col w-full">
+            <div className="flex flex-wrap gap-4">
                 {loading
                     ? <CardSkeletonList />
-                    : tasks.map((task) => <TaskCard key={task._id} task={task} onToggleStatus={onToggleStatusHandler} onDelete={onDeleteHandler} />)
+                    : tasks.map((task, index) => (
+
+                        <TaskCard
+                            key={index}
+                            task={task}
+                            onToggleStatus={onToggleStatusHandler}
+                            onDelete={onDeleteHandler}
+                            onSave={onSaveHanlder}
+                        />
+                    ))
                 }
             </div>
-
         </div>
+
     )
 }
 
 function CardSkeletonList() {
     return (
         <>
-            {Array.from({ length: 4 }).map((_, index) => (
-                <Card key={index} className="w-md overflow-hidden">
+            {Array.from({ length: 8 }).map((_, index) => (
+                <Card key={index} className="w-full overflow-hidden">
                     {/* Header */}
                     <CardHeader>
                         <div className="flex items-center justify-between">

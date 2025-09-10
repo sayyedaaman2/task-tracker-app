@@ -9,6 +9,8 @@ import {
 import type { Task } from "../models/Task";
 import { Button } from "@/components/ui/button";
 import timeAndDateFormater from "@/utils/timeformat";
+import { useState } from "react";
+import  TaskForm  from "./TaskForm";
 
 // simple status badge colors
 const statusColors: Record<Task["status"], string> = {
@@ -21,17 +23,20 @@ const statusColors: Record<Task["status"], string> = {
 
 export function TaskCard({
   task,
-  onUpdate,
+  // onUpdate,
   onDelete,
   onToggleStatus,
+  onSave
 }: {
   task: Task;
   onUpdate?: (task: Task) => void;
   onDelete?: (id: string) => void;
   onToggleStatus?: (id: string) => void;
+  onSave? : (task:Task)=> void;
 }) {
-  return (
-    <Card className="w-full grid overflow-hidden">
+    const [open, setOpen] = useState<boolean>(false);
+  return (<>
+    <Card className="w-md grid overflow-hidden">
       {/* Header */}
       <CardHeader>
         <div className="flex items-center justify-between">
@@ -71,7 +76,7 @@ export function TaskCard({
       <CardFooter className="flex gap-2">
         <Button
           type="button"
-          onClick={() => onUpdate?.(task)}
+        onClick={() => setOpen(true)}
           variant="default"
         >
           Update
@@ -92,5 +97,13 @@ export function TaskCard({
         </Button>
       </CardFooter>
     </Card>
+    <TaskForm
+        open={open}
+        task={task}
+        onClose={() => setOpen(false)}
+        onSave={(updated) => onSave?.(updated)}
+      />
+  </>
+
   );
 }
