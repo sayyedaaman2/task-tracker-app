@@ -10,7 +10,8 @@ import type { Task } from "../models/Task";
 import { Button } from "@/components/ui/button";
 import timeAndDateFormater from "@/utils/timeformat";
 import { useState } from "react";
-import  TaskForm  from "./TaskForm";
+import TaskForm from "./TaskForm";
+import DeleteTaskDialog from "./DeleteTaskDialog";
 
 // simple status badge colors
 const statusColors: Record<Task["status"], string> = {
@@ -23,7 +24,6 @@ const statusColors: Record<Task["status"], string> = {
 
 export function TaskCard({
   task,
-  // onUpdate,
   onDelete,
   onToggleStatus,
   onSave
@@ -32,17 +32,18 @@ export function TaskCard({
   onUpdate?: (task: Task) => void;
   onDelete?: (id: string) => void;
   onToggleStatus?: (id: string) => void;
-  onSave? : (task:Task)=> void;
+  onSave?: (task: Task) => void;
 }) {
-    const [open, setOpen] = useState<boolean>(false);
+  const [openUpdate, setOpenUpdate] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   return (<>
-    <Card className="w-md grid overflow-hidden">
+    <Card className="w-full grid overflow-hidden">
       {/* Header */}
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle>{task.title}</CardTitle>
           <span
-            className={`px-2 py-1 text-xs font-medium rounded-md ${statusColors[task.status]}`}
+            className={`px-2 py-1 text-xs text-nowrap font-medium rounded-md ${statusColors[task.status]}`}
           >
             {task.status}
           </span>
@@ -76,14 +77,14 @@ export function TaskCard({
       <CardFooter className="flex gap-2">
         <Button
           type="button"
-        onClick={() => setOpen(true)}
+          onClick={() => setOpenUpdate(true)}
           variant="default"
         >
           Update
         </Button>
         <Button
           type="button"
-          onClick={() => task._id && onDelete?.(task._id)}
+          onClick={() => setOpenDelete(true)}
           variant="destructive"
         >
           Delete
@@ -98,11 +99,17 @@ export function TaskCard({
       </CardFooter>
     </Card>
     <TaskForm
-        open={open}
-        task={task}
-        onClose={() => setOpen(false)}
-        onSave={(updated) => onSave?.(updated)}
-      />
+      open={openUpdate}
+      task={task}
+      onClose={() => setOpenUpdate(false)}
+      onSave={(updated) => onSave?.(updated)}
+    />
+    <DeleteTaskDialog
+      onClose={() => setOpenDelete(false)}
+      open={openDelete}
+      onConfirm={() => task._id && onDelete?.(task._id)}
+      taskTitle={task.title}
+    />
   </>
 
   );

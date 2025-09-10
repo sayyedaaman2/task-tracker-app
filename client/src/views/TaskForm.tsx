@@ -49,9 +49,10 @@ export default function TaskForm({
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-
         if (task) {
             onSave({ ...task, title, description, status });
+        }else{
+            onSave({title,description,status})
         }
         onClose();
     };
@@ -70,6 +71,7 @@ export default function TaskForm({
                         <Label htmlFor="title">Title</Label>
                         <Input
                             id="title"
+                            required
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
                         />

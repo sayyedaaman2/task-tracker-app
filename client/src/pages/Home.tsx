@@ -3,6 +3,7 @@ import { useTaskViewModel } from "@/viewmodels/TaskViewModel";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { Task } from "@/models/Task";
+import AddTaskButton from "@/components/tasks/AddTaskButton";
 export default function HomePage() {
     const { tasks, loading, updateTask, addTask, deleteTask } = useTaskViewModel();
     function onToggleStatusHandler(id: string) {
@@ -27,7 +28,6 @@ export default function HomePage() {
     function onSaveHanlder(task: Task) {
 
         const { _id, ...rest } = task;
-        console.log(_id,rest);
         if (!_id) {
             addTask({ ...rest });
         } else {
@@ -36,8 +36,8 @@ export default function HomePage() {
     }
 
     return (
-        <div id="home" className="p-4 flex flex-col w-full">
-            <div className="flex flex-wrap gap-4">
+        <div id="home" className=" ">
+            <div className="grid [grid-template-columns:repeat(auto-fill,minmax(350px,1fr))] auto-rows-[250px] gap-4 p-4">
                 {loading
                     ? <CardSkeletonList />
                     : tasks.map((task, index) => (
@@ -52,6 +52,7 @@ export default function HomePage() {
                     ))
                 }
             </div>
+            <AddTaskButton onSave={onSaveHanlder}/>
         </div>
 
     )
