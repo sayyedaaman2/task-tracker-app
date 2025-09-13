@@ -9,34 +9,21 @@ import {
 import type { Task } from "../models/Task";
 import { Button } from "@/components/ui/button";
 import timeAndDateFormater from "@/utils/timeformat";
-import { useState } from "react";
-import TaskForm from "./TaskForm";
-import DeleteTaskDialog from "./DeleteTaskDialog";
+import {statusColors} from '@/utils/contants'
 
-// simple status badge colors
-const statusColors: Record<Task["status"], string> = {
-  pending: "bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100",
-  "in-progress":
-    "bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100",
-  completed:
-    "bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100",
-};
 
 export function TaskCard({
   task,
-  onDelete,
-  onToggleStatus,
-  onSave
+  onDeleteClick,
+  onEditClick,
+  onToggleStatus
 }: {
   task: Task;
-  onUpdate?: (task: Task) => void;
-  onDelete?: (id: string) => void;
+  onDeleteClick?: (task: Task) => void;
+  onEditClick?: (task: Task) => void;
   onToggleStatus?: (id: string) => void;
-  onSave?: (task: Task) => void;
 }) {
-  const [openUpdate, setOpenUpdate] = useState(false);
-  const [openDelete, setOpenDelete] = useState(false);
-  return (<>
+  return (
     <Card className="w-full grid overflow-hidden">
       {/* Header */}
       <CardHeader>
@@ -77,14 +64,14 @@ export function TaskCard({
       <CardFooter className="flex gap-2">
         <Button
           type="button"
-          onClick={() => setOpenUpdate(true)}
+          onClick={()=> onEditClick?.(task)}
           variant="default"
         >
           Update
         </Button>
         <Button
           type="button"
-          onClick={() => setOpenDelete(true)}
+          onClick={() => onDeleteClick?.(task)}
           variant="destructive"
         >
           Delete
@@ -98,19 +85,7 @@ export function TaskCard({
         </Button>
       </CardFooter>
     </Card>
-    <TaskForm
-      open={openUpdate}
-      task={task}
-      onClose={() => setOpenUpdate(false)}
-      onSave={(updated) => onSave?.(updated)}
-    />
-    <DeleteTaskDialog
-      onClose={() => setOpenDelete(false)}
-      open={openDelete}
-      onConfirm={() => task._id && onDelete?.(task._id)}
-      taskTitle={task.title}
-    />
-  </>
+
 
   );
 }
