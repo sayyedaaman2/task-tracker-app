@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { ArrowUpDown, MoreHorizontal } from 'lucide-react'
 import { statusColors, type TaskStatus } from '@/utils/contants'
 import { useDialog } from "@/contexts/DialogContext";
+import {Link} from 'react-router'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -117,12 +118,18 @@ export const columns: ColumnDef<Task>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem>
+              <Link to={`${task._id}`} className='w-full'>
+              View
+              </Link>
+            </DropdownMenuItem>
             <DropdownMenuItem onClick={() => openTaskForm(task)}>
               Edit
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => openDeleteDialog(task)} className="text-red-600" >
               Delete
             </DropdownMenuItem>
+            
           </DropdownMenuContent>
         </DropdownMenu>
       )

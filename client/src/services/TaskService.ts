@@ -3,11 +3,15 @@ import axios from "axios";
 const API_URL = "http://localhost:8000/tasks";
 
 export const TaskService = {
+    
     async getAll():Promise<Task[]>{
         const {data} = await axios.get(API_URL);
         return data;
     },
-    
+    async getById(id:string):Promise<Task>{
+        const {data} = await axios.get(`${API_URL}/${id}`);
+        return data;
+    },
     async create(task:Partial<Task>):Promise<Task>{
         const {data} = await axios.post(API_URL,task);
         return data;
