@@ -3,7 +3,7 @@ import {useTasks} from '@/contexts/TaskContext'
 export default function TaskPage(){
     const {tasks} = useTasks()
     return(
-        <div id="tasks" className="p-4">
+        <div id="tasks" className="p-2">
             <TaskTable data={tasks}/>
         </div>
     )

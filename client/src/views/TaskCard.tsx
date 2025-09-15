@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router";
 import {
   Card,
   CardContent,
@@ -9,7 +10,7 @@ import {
 import type { Task } from "../models/Task";
 import { Button } from "@/components/ui/button";
 import timeAndDateFormater from "@/utils/timeformat";
-import {statusColors} from '@/utils/contants'
+import { statusColors } from '@/utils/contants'
 
 
 export function TaskCard({
@@ -23,9 +24,24 @@ export function TaskCard({
   onEditClick?: (task: Task) => void;
   onToggleStatus?: (id: string) => void;
 }) {
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    if (task._id) navigate(`/tasks/${task._id}`);
+  };
+
+
+  // helper to prevent card click when clicking footer buttons
+  const stop = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
+
+
   return (
-    <Card className="w-full grid overflow-hidden">
+    <Card className="w-full grid overflow-hidden hover:bg-slate-50  cursor-pointer"
+    onClick={handleCardClick}>
       {/* Header */}
+
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle>{task.title}</CardTitle>
@@ -64,22 +80,35 @@ export function TaskCard({
       <CardFooter className="flex gap-2">
         <Button
           type="button"
-          onClick={()=> onEditClick?.(task)}
+          onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+            stop(e);
+            onEditClick?.(task);
+          }}
           variant="default"
+          className=" cursor-pointer hover:bg-slate-700"
         >
           Update
         </Button>
         <Button
           type="button"
-          onClick={() => onDeleteClick?.(task)}
+           onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+            stop(e);
+            onDeleteClick?.(task);
+            
+          }}
           variant="destructive"
+          className=" cursor-pointer hover:bg-red-800"
         >
           Delete
         </Button>
         <Button
           type="button"
-          onClick={() => task._id && onToggleStatus?.(task._id)}
+           onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+            stop(e);
+            task._id && onToggleStatus?.(task._id);
+          }}
           variant="outline"
+          className=" cursor-pointer hover:bg-green-500 hover:text-white"
         >
           {task.status === "completed" ? "Reopen" : "Mark Complete"}
         </Button>

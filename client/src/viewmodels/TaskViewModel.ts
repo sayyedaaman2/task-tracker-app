@@ -6,8 +6,10 @@ import useToast from "@/hooks/useToast";
 export function useTaskViewModel() {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const [selectedTask, setSelectedTask] = useState<Task | null>(null);
     const [error, setError] = useState<string | null>(null);
     const { toast } = useToast()
+
 
 
     const fetchTasks = useCallback(async () => {
@@ -48,6 +50,19 @@ export function useTaskViewModel() {
         }
 
     }
+    async function findById(id: string): Promise<void> {
+        try {
+            const task = await TaskService.getById(id);
+            setSelectedTask(task);
+            setError(null);
+        } catch (err) {
+            const message =
+                err instanceof Error ? err.message : "Failed to fetch task";
+            setError(message);
+            toast.error(`❌ ${message}`);
+            setSelectedTask(null);
+        }
+    }
     async function updateTask(id: string, task: Partial<Task>) {
         try {
             const updated = await TaskService.update(id, task);
@@ -80,10 +95,12 @@ export function useTaskViewModel() {
 
     return {
         tasks,
+        selectedTask,
         loading,
         error,
         fetchTasks,
         addTask,
+        findById,
         updateTask,
         deleteTask,
     }

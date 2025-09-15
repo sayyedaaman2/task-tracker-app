@@ -61,9 +61,9 @@ export default function TaskForm({
         <Dialog open={open} onOpenChange={onClose}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>{task ? "Update Task" : "New Task"}</DialogTitle>
+                    <DialogTitle>{(task?._id !== undefined) ? "Update Task" : "New Task"}</DialogTitle>
                     <DialogDescription>
-                        {task ? "Edit your task and save changes." : "Add a new task."}
+                        {(task?._id !== undefined)  ? "Edit your task and save changes." : "Add a new task."}
                     </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={handleSubmit} className="space-y-4">

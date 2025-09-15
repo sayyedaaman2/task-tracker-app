@@ -22,8 +22,8 @@ export default function HomePage() {
   }
 
   return (
-    <div id="home">
-      <div className="grid [grid-template-columns:repeat(auto-fill,minmax(350px,1fr))] auto-rows-[250px] gap-4 p-4">
+    <div id="home" className="h-full overflow-scroll scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent">
+      <div className="grid [grid-template-columns:repeat(auto-fill,minmax(350px,1fr))] auto-rows-[250px] gap-4 p-4 ">
         {loading ? (
           <CardSkeletonList />
         ) : (

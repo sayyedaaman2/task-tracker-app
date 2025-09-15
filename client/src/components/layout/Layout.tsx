@@ -8,10 +8,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       <SidebarProvider>
         <AppSidebar />
-        <main className="w-full">
+        <main className="w-full h-screen overflow-hidden">
           <SidebarTrigger />
           <DynamicBreadcrumb />
-          {children}
+          {children} 
         </main>
       </SidebarProvider>
     </RootContext>

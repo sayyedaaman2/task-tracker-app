@@ -21,10 +21,11 @@ export function DialogProvider({ children }: { children: ReactNode }) {
 
   // ---- Dialog control ----
   function openTaskForm(task?: Task) {
+    
     if (task) {
       setEditTask(task); // edit mode
     } else {
-      // ensure _id is undefined for new tasks
+      
       setEditTask({ title: "", description: "", status: "pending", _id: undefined } as Task);
     }
   }
