@@ -28,7 +28,7 @@ app.use(logger);
 app.get("/",(req,res)=>{
     res.send("Task Tracker API is running 🚀")
 })
-app.use('/',routes)
+app.use('/api',routes)
 
 app.use(notFound)
 app.use(errorHandler)
