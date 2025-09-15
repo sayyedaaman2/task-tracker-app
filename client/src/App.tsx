@@ -1,27 +1,36 @@
+import { Suspense, lazy, } from 'react'
 import Layout from "./components/layout/Layout"
 import { Routes, Route } from 'react-router'
-import HomePage from "./pages/Home"
-import AboutPage from "./pages/About"
-import DashboardPage from "./pages/Dashboard"
-import TaskPage from "./pages/Tasks"
-import TaskId from './pages/TaskId';
+const HomePage = lazy(()=>import('./pages/Home'))
+const AboutPage = lazy(()=>import('./pages/About'))
+
+const DashboardPage = lazy(()=>import('./pages/Dashboard'))
+
+const TaskPage = lazy(()=>import('./pages/Tasks'))
+
+const TaskIdPage = lazy(()=>import('./pages/TaskId'))
+
 import useToast from '@/hooks/useToast'
 function App() {
   const { ToastContainer } = useToast();
   return (
-    <Layout>
-      <Routes>
-        <Route index element={<HomePage />} />
-        <Route path="about" element={<AboutPage />} />
-        <Route path="dashboard" element={<DashboardPage />} />
-        <Route path="tasks" element={<TaskPage />} />
-        <Route path="tasks/:id" element={<TaskId/>}/>
+    <Suspense fallback={<div>Loading…</div>}>
+
+      <Layout>
+        <Routes>
+          <Route index element={<HomePage />} />
+          <Route path="about" element={<AboutPage />} />
+          <Route path="dashboard" element={<DashboardPage />} />
+          <Route path="tasks" element={<TaskPage />} />
+          <Route path="tasks/:id" element={<TaskIdPage />} />
 
 
 
-      </Routes>
-      <ToastContainer />
-    </Layout>
+        </Routes>
+        <ToastContainer />
+      </Layout>
+    </Suspense>
+
   )
 }
 
