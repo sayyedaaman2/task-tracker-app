@@ -1,69 +1,157 @@
-# React + TypeScript + Vite
+# 🎨 Task Tracker App - Frontend (MVVM Architecture)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple **Task Tracker Frontend** built with **React + Vite + TypeScript + TailwindCSS**, following the **MVVM (Model-View-ViewModel)** architecture pattern. This client consumes the backend API and provides a clean, responsive user interface for managing tasks.
 
-Currently, two official plugins are available:
+![Home Page](./src/assets/screenshots/home.png "Home screen")
+---
+![Task Page](./src/assets/screenshots/task.png "Task screen")
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 🚀 Features
+- User-friendly task management interface
+- Add, update, and delete tasks via backend API
+- Filter tasks by status (e.g., pending, completed)
+- Responsive UI with TailwindCSS
+- Toast notifications for feedback
+- Clean separation of concerns with MVVM pattern
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 📂 Folder Structure
+```bash
+src/
+├── models/        # Data models (Task, User, DTOs)
+│   └── taskModel.ts
+├── views/         # UI (pages, layouts, screens)
+│   └── TaskListView.tsx
+├── viewmodels/    # State + logic binding Models to Views
+│   └── taskViewModel.ts
+├── components/    # Reusable UI components (Button, Modal, etc.)
+│   └── TaskCard.tsx
+├── utils/         # Helper functions, constants
+│   └── apiClient.ts
+├── assets/        # Images, fonts, icons
+├── hooks/         # Custom hooks if any
+├── index.css        # Tailwind / global css
+├── main.tsx       # App entry point
+└── App.tsx        # Root component with routing
 ```
+---
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🏗️ Architecture (MVVM)
+- **Model (M)** → Defines data structures and API response models (e.g., Task model).
+- **View (V)** → UI components, pages, and layouts (React components).
+- **ViewModel (VM)** → Connects Views with Models, manages state and business logic (e.g., calls APIs, transforms data, exposes observables/state for Views to consume).
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Example responsibilities:
+- `models/` — TypeScript interfaces and types (Task, TaskDTO).
+- `viewmodels/` — business logic, state, API calls (using Axios), and exposes functions/props to Views.
+- `views/` — presentational components that consume ViewModel outputs and call ViewModel actions.
+- `components/` — small reusable UI pieces (Button, Modal, FormInput, TaskCard).
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
+
+## ⚙️ Tech Stack
+- **React 19** – UI framework
+- **Vite** – Build tool
+- **TypeScript** – Static typing
+- **TailwindCSS** – Styling
+- **Radix UI + lucide-react** – Accessible UI components & icons
+- **Axios** – API requests
+- **React Router v7** – Client-side routing
+- **Moment.js** – Date handling
+- **ESLint + TypeScript ESLint** – Code linting
+
+---
+
+## 📦 Installation & Setup
+
+1. Clone the repo:
+    git clone https://github.com/yourusername/task-tracker-app-client.git
+    cd task-tracker-app-client
+
+2. Install dependencies:
+    pnpm install
+  
+3. Run development server:
+    pnpm dev
+
+App will start at:
+👉 http://localhost:5173
+
+4. Build for production:
+    pnpm build
+
+5. Preview production build:
+    pnpm preview
+
+6. Lint code:
+    pnpm lint
+
+---
+
+## 🔗 API Integration
+The frontend consumes the **Task Tracker Backend API**. Make sure the backend server is running before starting the client.
+
+Example:
+    const response = await axios.get("http://localhost:8000/api/tasks");
+
+Base URL can be configured via environment (e.g. `.env`):
+    VITE_API_BASE_URL=http://localhost:8000
+
+---
+
+## 🖼️ Example UI Components / Pages
+- **TaskListView** — shows list of tasks, filters, and actions.
+- **TaskCard** — displays single task with edit/delete buttons.
+- **AddTaskModal** — form to create a new task.
+- **EditTaskForm** — edit task details.
+- **Layout** — header, navigation, and container for views.
+
+---
+
+## 📚 Best Practices & Guidelines
+- Keep **ViewModels** responsible for side effects (API calls), transformation, and state shape.
+- Keep **Views** purely presentational: receive state & callbacks from ViewModels.
+- Keep **Models** as single source of types/interfaces.
+- Use TypeScript strictly (noImplicitAny, strict mode recommended).
+- Use ESLint + Prettier to maintain consistent code style.
+- Prefer functional components and React hooks.
+- Keep components small and focused — one responsibility each.
+
+---
+
+## 🛠️ Future Improvements
+- Add user authentication (JWT)
+- Add task due dates & reminders
+- Add pagination and advanced filtering
+- Add unit/integration tests (Jest + React Testing Library)
+- Implement dark mode and accessibility improvements
+- Use a state library (Zustand / Redux) if app state grows
+
+---
+
+## 📜 License
+This project is private. All rights reserved.
+
+---
+
+## 👨‍💻 Author
+
+<h3 align="center">Aaman Sayyed</h3>
+
+<p align="center">
+  <a href="https://sayyedaaman.vercel.app/">
+    <img src="https://img.shields.io/badge/🌐%20Portfolio-000?style=for-the-badge" />
+  </a>
+  <a href="https://www.linkedin.com/in/sayyed-aaman/">
+    <img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" />
+  </a>
+  <a href="https://github.com/sayyedaaman2">
+    <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" />
+  </a>
+  <a href="mailto:sayyedaaman9@gmail.com">
+    <img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white" />
+  </a>
+</p>

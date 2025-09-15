@@ -1,29 +1,27 @@
 import type { Task } from "../models/Task";
-import axios from "axios";
-const API_URL = "http://localhost:8000/tasks";
-
+import api from "../utils/apiClient";
 export const TaskService = {
     
     async getAll():Promise<Task[]>{
-        const {data} = await axios.get(API_URL);
+        const {data} = await api.get('/tasks');
         return data;
     },
     async getById(id:string):Promise<Task>{
-        const {data} = await axios.get(`${API_URL}/${id}`);
+        const {data} = await api.get(`${'/tasks'}/${id}`);
         return data;
     },
     async create(task:Partial<Task>):Promise<Task>{
-        const {data} = await axios.post(API_URL,task);
+        const {data} = await api.post('/tasks',task);
         return data;
     },
 
     async update(id:string, task:Partial<Task>):Promise<Task>{
-        const {data} = await axios.put(`${API_URL}/${id}`,task);
+        const {data} = await api.put(`${'/tasks'}/${id}`,task);
         return data
     },
 
     async remove(id:string):Promise<void>{
-        await axios.delete(`${API_URL}/${id}`);
+        await api.delete(`${'/tasks'}/${id}`);
     }
 
 }

@@ -4,6 +4,7 @@ import { Table, TableBody, TableHead, TableHeader, TableRow, TableCell } from '@
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import React from 'react'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 
 
 interface DataTableProps<TData, TValue> {
@@ -52,6 +53,22 @@ export function DataTable<TData, TValue>({
                     }
                     className="max-w-sm"
                 />
+                <Select
+                    onValueChange={(value) =>
+                        table.getColumn("status")?.setFilterValue(value === "all" ? undefined : value)
+                    }
+                    defaultValue="all"
+                >
+                    <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Filter by status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="all">All</SelectItem>
+                        <SelectItem value="pending">Pending</SelectItem>
+                        <SelectItem value="in-progress">In-Progress</SelectItem>
+                        <SelectItem value="completed">Completed</SelectItem>
+                    </SelectContent>
+                </Select>
             </div>
             <div className="overflow-hidden rounded-md border">
                 <Table>
